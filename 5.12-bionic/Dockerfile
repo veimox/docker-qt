@@ -1,13 +1,13 @@
 # Minimal docker container to build project
-# Image: rabits/qt:5.9-desktop
+# Image: rabits/qt:5.12-desktop
 
-FROM ubuntu:16.04
+FROM ubuntu:bionic
 MAINTAINER Rabit <home@rabits.org> (@rabits)
 
-ARG QT_VERSION=5.9.5
+ARG QT_VERSION=5.12.0
 
-ENV DEBIAN_FRONTEND noninteractive
-ENV QT_PATH /opt/Qt
+ENV DEBIAN_FRONTEND=noninteractive \
+    QT_PATH=/opt/Qt
 ENV QT_DESKTOP $QT_PATH/${QT_VERSION}/gcc_64
 ENV PATH $QT_DESKTOP/bin:$PATH
 
@@ -33,13 +33,14 @@ RUN apt update && apt full-upgrade -y && apt install -y --no-install-recommends 
     libxrender1 \
     libfontconfig1 \
     libdbus-1-3 \
-    && apt-get -qq clean
+    && apt-get -qq clean \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY extract-qt-installer.sh /tmp/qt/
 
 # Download & unpack Qt toolchains & clean
 RUN curl -Lo /tmp/qt/installer.run "https://download.qt.io/official_releases/qt/$(echo "${QT_VERSION}" | cut -d. -f 1-2)/${QT_VERSION}/qt-opensource-linux-x64-${QT_VERSION}.run" \
-    && QT_CI_PACKAGES=qt.$(echo "${QT_VERSION}" | tr -d .).gcc_64 /tmp/qt/extract-qt-installer.sh /tmp/qt/installer.run "$QT_PATH" \
+    && QT_CI_PACKAGES=qt.qt5.$(echo "${QT_VERSION}" | tr -d .).gcc_64 /tmp/qt/extract-qt-installer.sh /tmp/qt/installer.run "$QT_PATH" \
     && find "$QT_PATH" -mindepth 1 -maxdepth 1 ! -name "${QT_VERSION}" -exec echo 'Cleaning Qt SDK: {}' \; -exec rm -r '{}' \; \
     && rm -rf /tmp/qt
 
