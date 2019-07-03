@@ -4,7 +4,7 @@ services:
   - docker
 
 script:
-  - docker build --build-arg QT_VERSION=${QT_VERSION} IFW_VERSION=${IFW_VERSION} -f ${UBUNTU_CODENAME}.Dockerfile -t ${DOCKER_USERNAME}/qt:${UBUNTU_CODENAME}-${QT_VERSION}
+  - docker build --build-arg QT_VERSION --build-arg IFW_VERSION=${IFW_VERSION} -t ${DOCKER_USERNAME}/qt:${UBUNTU_CODENAME}-${QT_VERSION} -f ${UBUNTU_CODENAME}.Dockerfile .
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker push ${DOCKER_USERNAME}/qt:${UBUNTU_CODENAME}-${QT_VERSION}
 
