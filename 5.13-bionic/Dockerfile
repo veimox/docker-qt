@@ -1,10 +1,10 @@
 # Minimal docker container to build project
-# Image: rabits/qt:5.12-desktop
+# Image: veimox/qt:5.13-bionic
 
 FROM ubuntu:bionic
-MAINTAINER Rabit <home@rabits.org> (@rabits)
+MAINTAINER Jorge Rodriguez <veimox@gmail.com> (@veimox)
 
-ARG QT_VERSION=5.12.0
+ARG QT_VERSION=5.13.0
 
 ENV DEBIAN_FRONTEND=noninteractive \
     QT_PATH=/opt/Qt

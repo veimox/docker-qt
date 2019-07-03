@@ -1,10 +1,10 @@
 # Minimal docker container to build project
-# Image: rabits/qt:5.9-desktop
+# Image: veimox/qt:5.9-xenial
 
 FROM ubuntu:xenial
-MAINTAINER Rabit <home@rabits.org> (@rabits)
+MAINTAINER Jorge Rodriguez <veimox@gmail.org> (@veimox)
 
-ARG QT_VERSION=5.9.5
+ARG QT_VERSION=5.9.8
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV QT_PATH /opt/Qt
