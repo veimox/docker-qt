@@ -1,15 +1,14 @@
-# Minimal docker container to build project
-# Image: veimox/qt:5.9-xenial
-
-FROM ubuntu:xenial
+FROM ubuntu:bionic
 MAINTAINER Jorge Rodriguez <veimox@gmail.org> (@veimox)
 
 ARG QT_VERSION=5.9.8
+ARG IFW_VERSION=3.1.1
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV QT_PATH /opt/Qt
+ENV IFW_PATH /opt/QtIFW
 ENV QT_DESKTOP $QT_PATH/${QT_VERSION}/gcc_64
-ENV PATH $QT_DESKTOP/bin:$PATH
+ENV PATH $QT_DESKTOP/bin:$IFW_PATH/bin:$PATH
 
 # Install updates & requirements:
 #  * git, openssh-client, ca-certificates - clone & build
@@ -36,12 +35,18 @@ RUN apt update && apt full-upgrade -y && apt install -y --no-install-recommends 
     && apt-get -qq clean
 
 COPY extract-qt-installer.sh /tmp/qt/
+COPY extract-ifw.sh /tmp/ifw/
 
 # Download & unpack Qt toolchains & clean
 RUN curl -Lo /tmp/qt/installer.run "https://download.qt.io/official_releases/qt/$(echo "${QT_VERSION}" | cut -d. -f 1-2)/${QT_VERSION}/qt-opensource-linux-x64-${QT_VERSION}.run" \
-    && QT_CI_PACKAGES=qt.$(echo "${QT_VERSION}" | tr -d .).gcc_64 /tmp/qt/extract-qt-installer.sh /tmp/qt/installer.run "$QT_PATH" \
+    && QT_CI_PACKAGES=qt.qt5.$(echo "${QT_VERSION}" | tr -d .).gcc_64 /tmp/qt/extract-qt-installer.sh /tmp/qt/installer.run "$QT_PATH" \
     && find "$QT_PATH" -mindepth 1 -maxdepth 1 ! -name "${QT_VERSION}" -exec echo 'Cleaning Qt SDK: {}' \; -exec rm -r '{}' \; \
     && rm -rf /tmp/qt
+
+# Download & unpack Qt Intaller Framework & clean
+RUN curl -Lo /tmp/ifw/installer.run "https://download.qt.io/official_releases/qt-installer-framework/${IFW_VERSION}/QtInstallerFramework-linux-x64.run" \
+    && /tmp/ifw/extract-ifw.sh /tmp/ifw/installer.run "$IFW_PATH" \
+    && rm -rf /tmp/ifw
 
 # Reconfigure locale
 RUN locale-gen en_US.UTF-8 && dpkg-reconfigure locales
@@ -49,6 +54,3 @@ RUN locale-gen en_US.UTF-8 && dpkg-reconfigure locales
 # Add group & user + sudo
 RUN groupadd -r user && useradd --create-home --gid user user && echo 'user ALL=NOPASSWD: ALL' > /etc/sudoers.d/user
 
-USER user
-WORKDIR /home/user
-ENV HOME /home/user
