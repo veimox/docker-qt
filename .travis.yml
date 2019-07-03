@@ -4,9 +4,9 @@ services:
   - docker
 
 script:
-  - docker build --build-arg -t QT_VERSION=${QT_VERSION} IFW_VERSION=${IFW_VERSION} -f ${UBUNTU_CODENAME}.Dockerfile -t qt:${UBUNTU_CODENAME}-${QT_VERSION}
+  - docker build --build-arg -t QT_VERSION=${QT_VERSION} IFW_VERSION=${IFW_VERSION} -f ${UBUNTU_CODENAME}.Dockerfile -t ${DOCKER_USERNAME}/qt:${UBUNTU_CODENAME}-${QT_VERSION}
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker push veimox/qt:${UBUNTU_CODENAME}-${QT_VERSION}
+  - docker push ${DOCKER_USERNAME}/qt:${UBUNTU_CODENAME}-${QT_VERSION}
 
 matrix:
   include:
