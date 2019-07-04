@@ -4,11 +4,16 @@ MAINTAINER Jorge Rodriguez <veimox@gmail.org> (@veimox)
 ARG QT_VERSION=5.9.8
 ARG IFW_VERSION=3.1.1
 
-ENV DEBIAN_FRONTEND noninteractive
-ENV QT_PATH /opt/Qt
-ENV IFW_PATH /opt/QtIFW
-ENV QT_DESKTOP $QT_PATH/${QT_VERSION}/gcc_64
-ENV PATH $QT_DESKTOP/bin:$IFW_PATH/bin:$PATH
+# This is required to make the original rpath long so when replaced an error does not occure.
+# The replaced rpath can not be longer that the original rpath.
+ONBUILD ENV BASE_PATH /tmp/abcdefghijklmn
+RUN mkdir -p $BASE_PATH/
+
+ONBUILD ENV DEBIAN_FRONTEND noninteractive
+ONBUILD ENV QT_PATH $BASE_PATH/Qt
+ONBUILD ENV IFW_PATH $BASE_PATH/QtIFW
+ONBUILD ENV QT_DESKTOP $QT_PATH/${QT_VERSION}/gcc_64
+ONBUILD ENV PATH $QT_DESKTOP/bin:$IFW_PATH/bin:$PATH
 
 # Install updates & requirements:
 #  * git, openssh-client, ca-certificates - clone & build
@@ -50,7 +55,3 @@ RUN curl -Lo /tmp/ifw/installer.run "https://download.qt.io/official_releases/qt
 
 # Reconfigure locale
 RUN locale-gen en_US.UTF-8 && dpkg-reconfigure locales
-
-# Add group & user + sudo
-RUN groupadd -r user && useradd --create-home --gid user user && echo 'user ALL=NOPASSWD: ALL' > /etc/sudoers.d/user
-
