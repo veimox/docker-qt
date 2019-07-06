@@ -1,5 +1,5 @@
 FROM ubuntu:xenial
-MAINTAINER Jorge Rodriguez <veimox@gmail.org> (@veimox)
+LABEL maintainer="Jorge Rodriguez <veimox@gmail.org> (@veimox)"
 
 ARG QT_VERSION=5.9.8
 ARG IFW_VERSION=3.1.1
@@ -17,7 +17,7 @@ ONBUILD ENV PATH $QT_DESKTOP/bin:$IFW_PATH/bin:$PATH
 
 # Install updates & requirements:
 #  * git, openssh-client, ca-certificates - clone & build
-#  * locales, sudo - useful to set utf-8 locale & sudo usage
+#  * locales - useful to set utf-8 locale
 #  * curl - to download Qt bundle
 #  * build-essential, pkg-config, libgl1-mesa-dev - basic Qt build requirements
 #  * libsm6, libice6, libxext6, libxrender1, libfontconfig1, libdbus-1-3 - dependencies of the Qt bundle run-file
@@ -26,7 +26,6 @@ RUN apt update && apt full-upgrade -y && apt install -y --no-install-recommends 
     openssh-client \
     ca-certificates \
     locales \
-    sudo \
     curl \
     build-essential \
     pkg-config \
