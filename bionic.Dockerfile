@@ -68,3 +68,6 @@ RUN curl -Lo /tmp/ifw/installer.run "https://download.qt.io/official_releases/qt
 
 # Reconfigure locale
 RUN locale-gen en_US.UTF-8 && dpkg-reconfigure locales
+ENV LC_ALL=en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US.UTF-8
