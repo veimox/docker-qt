@@ -49,6 +49,7 @@ RUN apt update && apt full-upgrade -y && apt install -y --no-install-recommends 
     libyaml-cpp-dev \
     autoconf \
     software-properties-common \
+    cmake \
     && apt-get -qq clean
 
 COPY extract-qt-installer.sh /tmp/qt/
