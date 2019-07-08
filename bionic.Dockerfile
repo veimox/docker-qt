@@ -18,9 +18,11 @@ ENV PATH $QT_DESKTOP/bin:$IFW_PATH/bin:$PATH
 # Install updates & requirements:
 #  * git, openssh-client, ca-certificates - clone & build
 #  * locales - useful to set utf-8 locale
-#  * curl - to download Qt bundle
+#  * curl, wget - to download Qt bundle and others
 #  * build-essential, pkg-config, libgl1-mesa-dev - basic Qt build requirements
+#  * p7zip, p7zip-full - extracting 7z files
 #  * libsm6, libice6, libxext6, libxrender1, libfontconfig1, libdbus-1-3 - dependencies of the Qt bundle run-file
+#  * chrpath - change rpath
 RUN apt update && apt full-upgrade -y && apt install -y --no-install-recommends \
     git \
     openssh-client \
@@ -36,6 +38,17 @@ RUN apt update && apt full-upgrade -y && apt install -y --no-install-recommends 
     libxrender1 \
     libfontconfig1 \
     libdbus-1-3 \
+    wget \
+    p7zip \
+    p7zip-full \
+    python \
+    chrpath \
+    libxml2-dev \
+    zlib1g-dev \
+    libboost-dev \
+    libyaml-cpp-dev \
+    autoconf \
+    software-properties-common \
     && apt-get -qq clean
 
 COPY extract-qt-installer.sh /tmp/qt/
