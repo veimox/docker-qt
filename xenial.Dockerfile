@@ -6,7 +6,7 @@ ARG IFW_VERSION=3.1.1
 
 # This is required to make the original rpath long so when replaced an error does not occure.
 # The replaced rpath can not be longer that the original rpath.
-ENV BASE_PATH /tmp/abcdefghijklmn
+ENV BASE_PATH /tmp/abcdefghijklmnopqrstuvwxyz
 RUN mkdir -p $BASE_PATH/
 
 ENV DEBIAN_FRONTEND noninteractive
