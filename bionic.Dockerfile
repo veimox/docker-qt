@@ -1,7 +1,7 @@
 FROM ubuntu:bionic
 LABEL maintainer="Jorge Rodriguez <veimox@gmail.org> (@veimox)"
 
-ARG QT_VERSION=5.9.8
+ARG QT_VERSION=5.12.4
 ARG IFW_VERSION=3.1.1
 
 # This is required to make the original rpath long so when replaced an error does not occure.
