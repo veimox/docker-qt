@@ -50,6 +50,7 @@ RUN apt update && apt full-upgrade -y && apt install -y --no-install-recommends 
     autoconf \
     software-properties-common \
     cmake \
+    gettext-base \
     && apt-get -qq clean
 
 COPY extract-qt-installer.sh /tmp/qt/
