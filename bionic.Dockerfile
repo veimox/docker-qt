@@ -23,7 +23,7 @@ ENV PATH $QT_DESKTOP/bin:$IFW_PATH/bin:$PATH
 #  * p7zip, p7zip-full - extracting 7z files
 #  * libsm6, libice6, libxext6, libxrender1, libfontconfig1, libdbus-1-3 - dependencies of the Qt bundle run-file
 #  * chrpath - change rpath
-#  * elfutils - for perfparser
+#  * elfutils, libdw-dev - for perfparser
 #  * gettext-base - template file
 RUN apt update && apt full-upgrade -y && apt install -y --no-install-recommends \
     git \
@@ -54,6 +54,7 @@ RUN apt update && apt full-upgrade -y && apt install -y --no-install-recommends 
     cmake \
     gettext-base \
     elfutils \
+    libdw-dev \
     && apt-get -qq clean
 
 COPY extract-qt-installer.sh /tmp/qt/
